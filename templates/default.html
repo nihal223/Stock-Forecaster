@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8" />
+  <title>PyFolio</title>
+  <link rel="stylesheet" href="{{ STATIC_URL }}stylesheets/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}stylesheets/jquery-ui/jquery-ui-1.11.4.min.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}stylesheets/styles.css">
+  {% block scripts %}
+    <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery/jquery-ui-1.11.4.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}scripts/highstock/highstock.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}scripts/highstock/modules/exporting.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}scripts/bootstrap/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}scripts/d3/d3.v3.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}scripts/d3/d3pie.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}scripts/techanjs/techan.min.js"></script>
+  {% endblock scripts %}
+</head>
+<body>
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/home"><strong>PyFolio</strong></a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li><a href="/portfolio"><small>PORTFOLIO</small></a></li>
+          <li><a href="/about"><small>ABOUT</small></a></li>
+          <li><a href="/team"><small>TEAM</small></a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          {% if user.is_anonymous %}
+            <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+          {% else %}
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span>  {{ user }} </a>
+            <ul class="dropdown-menu">
+              <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout </a></li>
+            </ul>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+    {% block main %}
+    {% endblock main %}
+  </div>
+  <footer class="footer">
+  <div class="container">
+    <p class="text-muted">©by PyFolio. Proudly created by <a href="/team">PyFolio Team.</a></p>
+  </div>
+</footer>
+</body>
+</html>

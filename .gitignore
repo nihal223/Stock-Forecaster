@@ -1,0 +1,8 @@
+.DS_Store
+
+wiki
+*.pyc
+
+__pycache__/*
+
+CACHE/*
