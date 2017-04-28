@@ -63,6 +63,7 @@ def portfolio(request):
       cur = conn.cursor()
       sql = ''' SELECT svm_prediction FROM stockapp_prediction_svm_all WHERE symbol LIKE "%''' + symbol + '''%" ''' 
       sql2 = ''' SELECT ANN_prediction FROM stockapp_prediction_svm_all WHERE symbol LIKE "%''' + symbol + '''%" ''' 
+      sql3 = ''' SELECT bayesian_prediction FROM stockapp_prediction_svm_all WHERE symbol LIKE "%''' + symbol + '''%" '''
       
       cur.execute(sql)
       result=cur.fetchall()
