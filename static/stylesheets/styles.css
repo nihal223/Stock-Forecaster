@@ -2,7 +2,7 @@
         font: 15px sans-serif;
         font-family: Verdana;
         line-height: 1.8;
-        color: #818181;
+        color: #000000;
     }
     h2 {
         font-size: 24px;
@@ -50,7 +50,7 @@
         border-radius: 0;
       }
     .navbar li a, .navbar .navbar-brand {
-        color: #818181 !important;
+        color: #000000 !important;
     }
 
 
@@ -60,7 +60,7 @@
     }
     .navbar-default .navbar-toggle {
         border-color: transparent;
-        color: #818181 !important;
+        color: #000000 !important;
     }
     footer {
         background-color: gray;
@@ -90,7 +90,7 @@
         border-radius: 0;
     }
     .navbar li a, .navbar .navbar-brand {
-        color: #818181 !important;
+        color: #000000 !important;
     }
     .navbar-nav li a:hover, .navbar-nav li.active a {
         color: darkblue !important;
@@ -98,7 +98,7 @@
     }
     .navbar-default .navbar-toggle {
         border-color: transparent;
-        color: #818181 !important;
+        color: #000000 !important;
     }
     footer {
       background-color: lightblue;
