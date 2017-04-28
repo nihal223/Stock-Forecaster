@@ -1,5 +1,4 @@
 """Use googlefinance to get stock quote"""
-__author__ = 'Amay'
 
 import json
 from urllib.request import Request, urlopen

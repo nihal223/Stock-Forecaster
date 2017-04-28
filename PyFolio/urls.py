@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^(?i)admin/', include(admin.site.urls)),
     url(r'', include(LoginFolio_urls)),
     url(r'', include(StockFolio_urls)),
+    url(r'^queries/', include('queries.urls')),
 ]

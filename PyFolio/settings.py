@@ -64,7 +64,8 @@ PROJECT_APPS = [
     'LoginFolio',
     'StockFolio',
     'compressor',
-    'django.contrib.humanize'
+    'django.contrib.humanize',
+    'queries'
 ]
 
 INSTALLED_APPS = PREREQ_INSTALLED_APPS + PROJECT_APPS

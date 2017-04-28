@@ -1,5 +1,5 @@
 """Grabs all the stock Symbols from Nasdaq site"""
-__author__ = 'Amay'
+
 
 import urllib.request
 

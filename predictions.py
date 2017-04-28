@@ -10,9 +10,9 @@ from sklearn.svm import SVR, SVC, LinearSVC
 
 def gethistorical(name):
     try:
-        conn = sqlite3.connect('db.sqlite3')
+        conn = sqlite3.connect('PyFolio.sqlite3')
         cur = conn.cursor()
-        sql = '''SELECT strftime('%d',Time),strftime('%m',Time),strftime('%Y',Time),Open,Close FROM historical_data_10stocks WHERE symbol LIKE "%''' + name + '''%" LIMIT 240'''
+        sql = '''SELECT strftime('%d',Time),strftime('%m',Time),strftime('%Y',Time),Open,Close FROM historical_data_10stocks WHERE symbol LIKE "%''' + name + '''%" LIMIT 100'''
         cur.execute(sql)
         result=cur.fetchall()
         output=[]
@@ -30,11 +30,12 @@ def gethistorical(name):
 
 def getreal(name):
     try:
-        conn = sqlite3.connect('db.sqlite3')
+        conn = sqlite3.connect('PyFolio.sqlite3')
         cur = conn.cursor()
-        sql = '''SELECT strftime('%d',Time),strftime('%m',Time),strftime('%Y',Time),Open,Close FROM real2 WHERE symbol LIKE "%''' + name + '''%" LIMIT 240'''
+        sql = '''SELECT Price FROM realtime_data WHERE symbol LIKE "%''' + name + '''%" LIMIT 240'''
         cur.execute(sql)
         result=cur.fetchall()
+        '''
         output=[]
         for i in range(0,len(result)):
             temp=[]
@@ -43,7 +44,8 @@ def getreal(name):
             temp.append(float(result[i][3]))
             temp.append(float(result[i][4]))
             output.append(temp)
-        return output
+        '''
+        return result
 
     except:
         return 0
@@ -115,7 +117,7 @@ def svm(name, day):
         open_price_list.append(close_price_list[-1])
         close_price_list.append(predicted_close_price)
     
-    return predicted_price[29]
+    return predicted_price
 
 ## ================================================================
 
@@ -124,11 +126,11 @@ def svm(name, day):
 ## ================================================================
 
 def bayesian(name):
-    data1=gethistorical(name.lower())
+    data1=getreal(name.lower())
     data=[]
     a=60-len(data)
     for i in range(0,len(data1)):
-        data.append(data1[i][1])
+        data.append(data1[i][0])
     #print data 
     x_10 =[]
     for b in xrange(0,a):
@@ -478,20 +480,21 @@ class NeuralNetwork:
 
 
 
-stocklist = ['GOOG', 'YHOO', 'AMZN', 'AAPL', 'FB', 'INTL', 'ORCL', 'TSLA', 'GE', 'CSCO']
+stocklist = ['GOOG', 'YHOO','AMZN', 'AAPL', 'FB', 'INTC', 'IBM', 'MSFT', 'TWTR', 'HPQ']
 
-conn = sqlite3.connect('db.sqlite3')
+conn = sqlite3.connect('PyFolio.sqlite3')
 cur = conn.cursor()
-cur.execute('''DROP TABLE stockapp_prediction''')
-cur.execute('''CREATE TABLE stockapp_prediction
-   (ID INTEGER PRIMARY KEY AUTOINCREMENT,
-   Symbol VARCHAR,
-   svm_prediction REAL,
-   bayesian_prediction REAL,
-   ANN_prediction REAL
-    );''')
+cur.execute('''DROP TABLE stockapp_prediction_svm_all''')
+cur.execute('''CREATE TABLE stockapp_prediction_svm_all
+  (ID INTEGER PRIMARY KEY AUTOINCREMENT,
+  Symbol VARCHAR,
+  svm_prediction REAL,
+  bayesian_prediction REAL,
+  ANN_prediction REAL
+   );''')
 
 for stock in stocklist:
+    count=0
     print stock
     print "----------"
     s=svm(stock,30)
@@ -500,11 +503,17 @@ for stock in stocklist:
     print "Bayesian Prediction: "+str(B)
     ann=analyzeSymbol(stock)
     print "Neural Network Prediction: "+str(ann)
-    cur.execute ("""
-	            INSERT INTO stockapp_prediction (symbol, svm_prediction, bayesian_prediction, ANN_prediction)
-	            VALUES
-	                (?, ?, ?, ?) 
-	       """, (stock, s, B, ann))
+    
+    while count<30:
+       if count!=0:
+           B=0
+            ann=0
+        cur.execute ("""
+    	            INSERT INTO stockapp_prediction_svm_all (symbol, svm_prediction, bayesian_prediction, ANN_prediction)
+    	            VALUES
+    	                (?, ?, ?, ?) 
+    	       """, (stock, s[count], B, ann))
+        count = count + 1
     
 conn.commit() 
 cur.close() 

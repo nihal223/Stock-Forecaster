@@ -1,11 +1,11 @@
 import sqlite3
 from yahoo_finance import Share
 #yahoo = Share('GOOG')
-company_list=['GOOG', 'YHOO',' AMZN', 'AAPL', 'FB', 'INTL', 'ORCL', 'TSLA', 'GE', 'CSCO']
+company_list = ['GOOG', 'YHOO', 'AMZN', 'AAPL', 'FB', 'INTC', 'IBM', 'MSFT', 'TWTR', 'HPQ']
 li=[]
 for i in range(len(company_list)):
 	comp=Share(company_list[i])
-	li.append(comp.get_historical('2014-04-25', '2015-04-25'))
+	li.append(comp.get_historical('2016-04-25', '2017-04-26'))
 
 print li[1][1]
 #comp=Share(company_list[1])
@@ -13,7 +13,7 @@ print li[1][1]
 
 conn = sqlite3.connect('PyFolio.sqlite3')
 cur = conn.cursor()
-#cur.execute('''DROP TABLE hist2''')
+cur.execute('''DROP TABLE historical_data_10stocks''')
 cur.execute('''CREATE TABLE historical_data_10stocks
        (ID INTEGER PRIMARY KEY AUTOINCREMENT,
        Symbol		VARCHAR,

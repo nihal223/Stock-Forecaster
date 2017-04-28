@@ -1,0 +1,49 @@
+{% extends 'default.html' %}
+{% load humanize %}
+
+{% block main %}
+
+
+    	<form class='form-inline' action="runquery/" method="post">
+	    	{% csrf_token %}
+	        <h1>Select a company</h1>
+	        <select class='form-control' name="companyname">
+	  			<option value="GOOG">Google</option>
+	  			<option value="AAPL">Apple</option>
+	  			<option value="AMZN">Amazon</option>
+	  			<option value="FB">Facebook</option>
+	  			<option value="YHOO">Yahoo</option>
+	  			<option value="INTC">Intel</option>
+	  			<option value="IBM">IBM</option>
+	  			<option value="HP">HP</option>
+	  			<option value="MSFT">Microsoft</option>
+	  			<option value="TWTR">Twitter</option>
+			</select>
+			<select class='form-control' name="query">
+				<option value="1">List of All companies with latest stock price</option>
+	  			<option value="2">Highest Stock price in last 10 days</option>
+	  			<option value="3">Average in last year</option>
+	  			<option value="4">Lowest stock price in last year</option>
+	  			<option value="5">Find companies with average closing price lesser than lowest closing price of this company</option>
+			</select>
+			<button type="submit" class='btn btn-primary'>Try</button>
+
+
+			
+        <table class="table table-condensed table-striped">
+          {% for new in companyname %}
+            <tr>
+              <td> 
+              	<h1> {{new}} </h1>
+              </td>
+              
+            </tr>
+          {% endfor%}
+        </table>
+      
+
+	
+
+		</form> 
+		
+{% endblock %}

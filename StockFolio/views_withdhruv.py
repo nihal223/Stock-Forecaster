@@ -3,7 +3,7 @@ from django.shortcuts import render
 # Takes care of checking if the user is logged in or not
 from django.contrib.auth.decorators import login_required
 # Yahoo YQL stockretiever to get the stock infos
-from lib.yahoo_stock_scraper.stockretriever import get_current_info, get_historical_info, get_3_month_info, get_news_feed, get_12_month_info
+from lib.yahoo_stock_scraper.stockretriever import get_current_info, get_historical_info, get_3_month_info, get_news_feed
 # For workbook to create the historical data of a stock
 import xlwt
 # Http clients to send the attachment file for historical data
@@ -39,7 +39,7 @@ def portfolio(request):
         money = portfolio_stock['money']
         porfolio = portfolio_stock['portfolio_info']
 
-        return render(request, 'StockFolio/portfolio.html', {'stock':get_current_info([''+symbol]), 'news' : get_news_feed(symbol), 'portfolio' : porfolio, 'stock_rows' : plotStock(symbol), 'portfolio_rows' : plot(user_id), 'symbols' : json.dumps(STOCK_SYMBOLS), 'money' : money})
+        return render(request, 'StockFolio/portfolio.html', {'stock':get_current_info([''+symbol]), 'news' : get_news_feed(symbol), 'portfolio' : porfolio, 'portfolio_rows' : plot(user_id), 'symbols' : json.dumps(STOCK_SYMBOLS), 'money' : money})
 
     elif which_form == 'download-historical':
       return download_historical(request.POST.get('stock-symbol', '').strip())
@@ -91,11 +91,9 @@ def portfolio(request):
         msg = "Buy this stock for long term gains"
 
       if result2[0][0] > stock_price+2:
-        if symbol in my_stocks:
-          msg = msg + " and buy for short term gains"
+        msg = msg + " and buy for short term gains"
       elif stock_price <result2[0][0] < stock_price+2:
-        if symbol in my_stocks:
-          msg = msg + " and hold for short term"
+        msg = msg + " and hold for short term"
       else:
         msg = msg + " and sell to avoid short term losses"
 
@@ -167,7 +165,7 @@ def plot(user_id):
   rows = []
   stocks = StockPortfolio.objects.filter(user=user_id)
   if stocks:
-    data = [list(reversed(get_12_month_info(stock.stock))) for stock in stocks]
+    data = [list(reversed(get_3_month_info(stock.stock))) for stock in stocks]
     days = [day['Date'] for day in data[0]]
     for idx, day in enumerate(days):
       first = True
@@ -188,34 +186,6 @@ def plot(user_id):
           row['Percent'] += (float(stock[idx]['Open']) - float(stock[idx]['Close'])) / float(stock[idx]['Close']) * 100
       rows.append(row)
     rows.reverse()
-    
-def plotStock(stock_id):
-  '''Gets Months of historical info on stock and for the graph plots of portfolio'''
-  rows = []
-  stocks = stock_id
-  if stocks:
-    data = [list(reversed(get_12_month_info(stocks)))]
-    days = [day['Date'] for day in data[0]]
-    for idx, day in enumerate(days):
-      first = True
-      for stock_index, stock in enumerate(data):
-        if len(stock) <= idx:
-          continue
-        if first:
-          row = {'Value' : round(float(stock[idx]['Close']), 2), 'Date' : day, 'Percent': (float(stock[idx]['Open']) - float(stock[idx]['Close'])) / float(stock[idx]['Close']) * 100, 'Volume': int(stock[idx]['Volume']), 'High': float(stock[idx]['High']), 'Low': float(stock[idx]['Low']), 'AdjClose': float(stock[idx]['AdjClose']), 'Open': float(stock[idx]['Open'])}
-          first = False
-        else:
-          row['Date'] = day
-          row['Value'] += round(float(stock[idx]['Close']), 2)
-          row['Volume'] += int(stock[idx]['Volume'])
-          row['Open'] = (row['Open']  + float(stock[idx]['Open']))/2
-          row['High'] = (row['High']  + float(stock[idx]['High']))/2
-          row['Low'] = (row['Low']  + float(stock[idx]['Low']))/2
-          row['AdjClose'] = (row['AdjClose']  + float(stock[idx]['AdjClose']))/2
-          row['Percent'] += (float(stock[idx]['Open']) - float(stock[idx]['Close'])) / float(stock[idx]['Close']) * 100
-      rows.append(row)
-    rows.reverse()
-  return rows
   return rows
 
 def svm_plot(request):
