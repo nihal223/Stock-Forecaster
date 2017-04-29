@@ -1,8 +1,8 @@
-# PyFolio
+# RU Stocks
 ### OVERVIEW:
-PyFolio is a free web application designed to provide trading simulations to users and it is built on Python Django Framework. PyFolio uses real-time stock market data to paint the most accurate picture of investment portfolios customized for perspective investors. It allows users to design their own portfolios and display quantitative factors with highly visualized graphs and charts.
+RU Stocks is a free web application designed to provide trading simulations to users and it is built on Python Django Framework. RU Stocks uses real-time stock market data to paint the most accurate picture of investment portfolios customized for perspective investors. It allows users to design their own portfolios and display quantitative factors with highly visualized graphs and charts.
 ### TARGET AUDIENCE:
-Our target audience includes anyone and everyone who is interested in stock investing. Whether you are new to the stock market and want to test the water before turning to a stockbroker, or you are a student interested in investing and looking for a place to do market simulation, or you are an experienced independent stock trader looking for a place to test out different portfolio strategies but don’t have access to the tools, PyFolio is the right place for you.
+Our target audience includes anyone and everyone who is interested in stock investing. Whether you are new to the stock market and want to test the water before turning to a stockbroker, or you are a student interested in investing and looking for a place to do market simulation, or you are an experienced independent stock trader looking for a place to test out different portfolio strategies but don’t have access to the tools, RU Stocks is the right place for you.
 ### FEATURES:
 * Leverages a user friendly interface
   * Straightforward buttons to look up stocks and buy/sell certain number of shares
@@ -27,7 +27,7 @@ Our target audience includes anyone and everyone who is interested in stock inve
 * User-Friendly and self-explanatory (No need to know big financial terms)
 * Highly visualized information customized to users’ needs
 
-In summary, PyFolio is a one-stop shop for users to gather data, news, and analysis in order to build value-adding portfolios. It is practical and useful in many ways. Hope you will enjoy using PyFolio. Please [read our Wiki page](https://github.com/Amay22/PyFolio/wiki)
+In summary, RU Stocks is a one-stop shop for users to gather data, news, and analysis in order to build value-adding portfolios. It is practical and useful in many ways. Hope you will enjoy using RU Stocks. Please [read our Wiki page](https://github.com/Amay22/RU Stocks/wiki)
 
 ### HOW TO RUN:
 
@@ -54,7 +54,7 @@ Then install coffee if haven't done so already.
 sudo npm install -g coffee-script
 ```
 
-Install the requirement packages for PyFolio
+Install the requirement packages for RU Stocks
 
 ```
 pip install –r requirments.txt
