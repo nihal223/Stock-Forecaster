@@ -39,7 +39,9 @@ def portfolio(request):
         money = portfolio_stock['money']
         porfolio = portfolio_stock['portfolio_info']
 
-        return render(request, 'StockFolio/portfolio.html', {'stock':get_current_info([''+symbol]), 'news' : get_news_feed(symbol), 'portfolio' : porfolio, 'stock_rows' : plotStock(symbol), 'portfolio_rows' : plot(user_id), 'symbols' : json.dumps(STOCK_SYMBOLS), 'money' : money})
+
+
+        return render(request, 'StockFolio/portfolio.html', {'stock':get_current_info([''+symbol]), 'news' : get_news_feed(symbol), 'portfolio' : porfolio, 'stock_rows'  : plot(user_id), 'symbols' : json.dumps(STOCK_SYMBOLS), 'money' : money})
 
     elif which_form == 'download-historical':
       return download_historical(request.POST.get('stock-symbol', '').strip())
@@ -83,29 +85,6 @@ def portfolio(request):
         my_stocks.append(portfolio_stock['portfolio_info'][i]['symbol'])
 
       x,y=0,0
-      if float(reco_ann[0][0])>1.1*float(stock_price) or float(reco_svm[29])>1.1*float(stock_price):
-        if float(reco_ann[0][0])>1.1*float(stock_price):
-          x=1
-        elif float(reco_svm[29])>1.1*float(stock_price):
-          y=1
-
-        if float(reco_ann[0][0])>1.1*float(stock_price) and float(reco_svm[29])>1.1*float(stock_price):
-          x,y=1,1
-
-        if (x==1 and y==0):
-          print ("Strong Buy for Short term gains")
-          message="Strong Buy for Short term gains"
-
-        elif (y==1 and x==0):
-          print ("Strong Buy for Long term gains")
-          message="Strong Buy for Long term gains"
-
-        elif (y==1 and x==1):
-          print ("Strong buy for short and long term gains")
-          message="Strong buy for short and long term gains"
-
-
-
 
       if float(reco_ann[0][0])>float(stock_price)+5 or float(reco_svm[29])>1.05*float(stock_price):
         x,y=0,0
@@ -118,120 +97,62 @@ def portfolio(request):
           x,y=1,1
 
         if (x==1 and y==0):
-          print ("Buy for Short term gains")
           message="Buy for Short term gains"
 
         elif (y==1 and x==0):
-          print ("Buy for Long term gains")
           message="Buy for Long term gains"
 
         elif (y==1 and x==1):
-          print ("Buy for short and long term gains")
           message="Buy for short and long term gains"
 
-
-      if float(reco_ann[0][0])<float(stock_price)+5 and float(reco_ann[0][0])>float(stock_price)-5 and float(reco_svm[29])<=1.05*float(stock_price) and float(reco_svm[29])>0.95*float(stock_price):
-        x,y=0,0
-        if float(reco_ann[0][0])<float(stock_price)+5 and float(reco_ann[0][0])>float(stock_price)-5:
-          x=1
-        elif float(reco_svm[29])<=1.05*float(stock_price) and float(reco_svm[29])>0.95*float(stock_price):
-          y=1
-
+      if symbol in my_stocks:    
         if float(reco_ann[0][0])<float(stock_price)+5 and float(reco_ann[0][0])>float(stock_price)-5 and float(reco_svm[29])<=1.05*float(stock_price) and float(reco_svm[29])>0.95*float(stock_price):
-          x,y=1,1
+          x,y=0,0
+          if float(reco_ann[0][0])<float(stock_price)+5 and float(reco_ann[0][0])>float(stock_price)-5:
+            x=1
+          elif float(reco_svm[29])<=1.05*float(stock_price) and float(reco_svm[29])>0.95*float(stock_price):
+            y=1
 
-        if (x==1 and y==0):
-          print ("HOLD")
-          message="HOLD"
+          if float(reco_ann[0][0])<float(stock_price)+5 and float(reco_ann[0][0])>float(stock_price)-5 and float(reco_svm[29])<=1.05*float(stock_price) and float(reco_svm[29])>0.95*float(stock_price):
+            x,y=1,1
 
-        elif (y==1 and x==0):
-          print ("HOLD")
-          message="HOLD"
+          if (x==1 and y==0):
+            message="HOLD"
 
-        elif (y==1 and x==1):
-          print ("HOLD")
-          message="HOLD"
+          elif (y==1 and x==0):
+            message="HOLD"
 
-
-
-      if float(reco_ann[0][0])<float(stock_price)-5 and float(reco_ann[0][0])>=0.90*float(stock_price) or float(reco_svm[29])<0.95*float(stock_price) and float(reco_svm[29])>0.90*float(stock_price):
-        x,y=0,0
-        if float(reco_ann[0][0])>float(stock_price)-5 and float(reco_ann[0][0])>0.90*float(stock_price):
-          x=1
-        elif float(reco_svm[29])>0.95*float(stock_price) and float(reco_svm[29])>0.90*float(stock_price):
-          y=1
-
-        if float(reco_ann[0][0])>float(stock_price)-5 and float(reco_ann[0][0])>=0.90*float(stock_price) and float(reco_svm[29])>0.95*float(stock_price) and float(reco_svm[29])>0.90*float(stock_price):
-          x,y=1,1
-
-        if (x==1 and y==0):
-          print ("SELL")
-          message="SELL"
-
-        elif (y==1 and x==0):
-          print ("SELL")
-          message="SELL"
-
-        elif (y==1 and x==1):
-          print ("SELL")
-          message="SELL"
-
-
-      if float(reco_ann[0][0])<0.90*float(stock_price) or float(reco_svm[29])<0.90*float(stock_price):
-        if float(reco_ann[0][0])<0.90*float(stock_price):
-          x=1
-        elif float(reco_svm[29])<0.90*float(stock_price):
-          y=1
-
-        if float(reco_ann[0][0])<0.90*float(stock_price) or float(reco_svm[29])<0.90*float(stock_price):
-          x,y=1,1
-
-        if (x==1 and y==0):
-          print ("Strong SELL")
-          message="Strong SELL"
-
-        elif (y==1 and x==0):
-          print ("Strong SELL")
-          message="Strong SELL"
-
-        elif (y==1 and x==1):
-          print ("Strong SELL")
-          message="Strong SELL"  
-
-
-
-
-
-
-        '''
-      if 1.1 * stock_price > reco[29]:
-        if symbol in my_stocks:
-          msg = "Sell this stock to avoid long term losses"
-        else:
-          msg = "Stock is not in your portfolio"
-      elif 1.1 * stock_price > reco[29] > stock_price:
-        if symbol in my_stocks:
-          msg = "Hold the Stock for long term"
-        else:
-          msg = "Stock is not in your portfolio"
+          elif (y==1 and x==1):
+            message="HOLD"
       else:
-        msg = "Buy this stock for long term gains"
+        message = "Stock not in your portfolio"
 
-      if result2[0][0] > stock_price+2:
-        if symbol in my_stocks:
-          msg = msg + " and buy for short term gains"
-      elif stock_price <result2[0][0] < stock_price+2:
-        if symbol in my_stocks:
-          msg = msg + " and hold for short term"
+      if symbol in my_stocks:
+        if float(reco_ann[0][0])<float(stock_price)-5 and float(reco_ann[0][0])>=0.90*float(stock_price) or float(reco_svm[29])<0.95*float(stock_price) and float(reco_svm[29])>0.90*float(stock_price):
+          x,y=0,0
+          if float(reco_ann[0][0])>float(stock_price)-5 and float(reco_ann[0][0])>0.90*float(stock_price):
+            x=1
+          elif float(reco_svm[29])>0.95*float(stock_price) and float(reco_svm[29])>0.90*float(stock_price):
+            y=1
+
+          if float(reco_ann[0][0])>float(stock_price)-5 and float(reco_ann[0][0])>=0.90*float(stock_price) and float(reco_svm[29])>0.95*float(stock_price) and float(reco_svm[29])>0.90*float(stock_price):
+            x,y=1,1
+
+          if (x==1 and y==0):
+            message="SELL"
+
+          elif (y==1 and x==0):
+            message="SELL"
+
+          elif (y==1 and x==1):
+            message="SELL"
       else:
-        msg = msg + " and sell to avoid short term losses"
-        '''
+        message = "Stock not in your portfolio"
+
+      ann_pred = "Tomorrow's predicted price: " + str(reco_ann[0][0])
 
 
-
-
-
-      return render(request, 'StockFolio/portfolio.html', {'stock':get_current_info([''+symbol]), 'news' : get_news_feed(symbol), 'portfolio' : porfolio, 'portfolio_rows' : plot(user_id), 'symbols' : json.dumps(STOCK_SYMBOLS), 'money' : money, 'value_reco': message})
+      return render(request, 'StockFolio/portfolio.html', {'stock':get_current_info([''+symbol]), 'news' : get_news_feed(symbol), 'portfolio' : porfolio, 'portfolio_rows' : plot(user_id), 'symbols' : json.dumps(STOCK_SYMBOLS), 'money' : money, 'value_reco': message, 'ann_pred': ann_pred})
 
     elif which_form == 'buy-sell':
       symbol = request.POST.get('stock-symbol', '').strip()
@@ -315,6 +236,7 @@ def plot(user_id):
           row['Percent'] += (float(stock[idx]['Open']) - float(stock[idx]['Close'])) / float(stock[idx]['Close']) * 100
       rows.append(row)
     rows.reverse()
+  return rows
     
 def plotStock(stock_id):
   '''Gets Months of historical info on stock and for the graph plots of portfolio'''
@@ -342,8 +264,7 @@ def plotStock(stock_id):
           row['Percent'] += (float(stock[idx]['Open']) - float(stock[idx]['Close'])) / float(stock[idx]['Close']) * 100
       rows.append(row)
     rows.reverse()
-  return rows
-  return rows
+  #return rows
 
 def svm_plot(request):
   if request.method == 'POST':
@@ -372,4 +293,42 @@ def svm_plot(request):
   response=django.http.HttpResponse(content_type='image/png')
   canvas.print_png(response)
   return response
+
+def obv_plot(request):
+  if request.method == 'POST':
+    which_form = request.POST.get('which-form', '').strip()
+    if which_form == 'obv-plot':
+      symbol = request.POST.get('stock-symbol', '').strip()
+  conn = sqlite3.connect('PyFolio.sqlite3')
+  cur = conn.cursor()
+  sql = ''' SELECT Close,Volume FROM historical_data_10stocks WHERE symbol LIKE "%''' + symbol + '''%" ''' 
+  cur.execute(sql)
+  result=cur.fetchall()
+  x=[]
+  y=[]
+  prev_obv=0
+  for i in range(60):
+    if result[i][0] < result[i+1][0]:
+      y.append((prev_obv+result[i+1][1]))
+    elif result[i][0] > result[i+1][0]:
+      y.append((prev_obv-result[i+1][1]))
+    else:
+      y.append(prev_obv)
+  y.reverse()
+  print(y)    
+  fig=Figure()
+  ax=fig.add_subplot(111)
+  now=datetime.datetime.now()
+  delta=datetime.timedelta(days=1)
+  for i in range(60):
+      x.append(now)
+      now+=delta
+  ax.plot_date(x, y, '-')
+  ax.xaxis.set_major_formatter(DateFormatter('%Y-%m-%d'))
+  fig.autofmt_xdate()
+  canvas=FigureCanvas(fig)
+  response=django.http.HttpResponse(content_type='image/png')
+  canvas.print_png(response)
+  return response
+
 

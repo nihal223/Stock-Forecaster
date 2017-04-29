@@ -41,6 +41,7 @@ def runquery(request):
 	elif(querynumber=='5'):
 		row=cur.execute('''SELECT Symbol,AVG(Close) from historical_data_10stocks GROUP BY Symbol HAVING AVG(Close) < (SELECT MIN(Close) FROM historical_data_10stocks WHERE Symbol=(?) GROUP BY Symbol) ''',(companyname,))
 		result = row.fetchall()
+		# result = list(result)
 	
 	return render(request, "index.html", {"companyname": result})
 

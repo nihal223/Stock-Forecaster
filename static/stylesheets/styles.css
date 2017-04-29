@@ -24,6 +24,7 @@
     }
     .bg-grey {
         background-color: #f6f6f6;
+
     }
     .logo-small {
         color: darkblue;
@@ -82,6 +83,7 @@
         margin-left: 100px;
         margin-top: 100px;
     }
+
     .navbar {
         background-color:#EF7928;
         font-family: 'AvenirNext','Helvetica Neue',Arial,Helvetica, sans-serif;

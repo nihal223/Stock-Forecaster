@@ -31,14 +31,24 @@
 
 		<br><br>
         <table class="table table-striped table-bordered">
-          {% for new in companyname %}
-            <tr>
-              <td> 
-              	<p> {{new}} </p>
-              </td>
-              
-            </tr>
-          {% endfor%}
+		{% if companyname.1 %}
+			{% for new in companyname %}
+				<tr>
+				<td> 
+				<p> {{new.0}} </p>
+				</td>
+				<td> 
+				<p> {{new.1}} </p>
+				</td>
+				</tr>
+			{% endfor%}
+		{% else %}
+			<tr>
+			<td> 
+			<p> {{companyname.0}} </p>
+			</td>
+			</tr>
+		{% endif %}
         </table>
       
 

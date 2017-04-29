@@ -4,6 +4,7 @@ from . import views as StockFolio_views
 
 urlpatterns = [
 	#url(r'^recommend', StockFolio_views.recommend, name="recommend"),
+	url(r'^obv_plot', StockFolio_views.obv_plot, name="obv_plot"),
     url(r'^svm_plot', StockFolio_views.svm_plot, name="svm_plot"),
     url(r'^(?i)portfolio', StockFolio_views.portfolio, name="portfolio"),
 ]

@@ -9,12 +9,26 @@
     var stock_symbols = {{ symbols | safe }}
   </script>
   <style>
-  #svm{
+  #outer{
+    width: 100%;
+    text-align: center;
+   margin-left: auto;
+  margin-right: auto;
+  }
+.inner{
+    float: center;
+    display: inline-block;
+  }
+
+/*  #svm{
     float: left;
+  }
+  #obv{
+    float:middle;
   }
   #reco{
     float: right;
-  }
+  }*/
   </style>
 
   {% load compress %}
@@ -38,12 +52,12 @@
         <input type="hidden" name="which-form" value="find-stock"/>
       </div>
       <div class="btn-group">
-        <button type="submit" class="btn btn-primary">Look up</button>
+        <button type="submit" class="btn btn-primary">Search Stock</button>
       </div>
     </div>
   </form>
 
-  <div align="center" style="color: {% if money.profit == '+' %}green{% else %}red{% endif %};" class="page-header">
+  <div align="center" style="color: black; font-family: helvetica" class="page-header">
     <table class="table table-condensed table-bordered table-striped volumes">
       <tr>
         <th>Spent: $ {{ money.spent | intcomma }}</th>
@@ -302,7 +316,8 @@
         </table>
       </div>
       <br>
-      <div id="svm">
+      <center><div id="button_outer">
+      <div id="svm" class="inner">
         <form action="svm_plot" method = "POST">
 
           {% csrf_token %}
@@ -312,7 +327,17 @@
 
         </form>
       </div>
-      <div id="reco">
+      <div id="obv" class="inner">
+        <form action="obv_plot" method = "POST">
+
+          {% csrf_token %}
+          <input type="hidden" name="stock-symbol" value="{{ stock.Symbol }}"/>
+          <input type="hidden" name="which-form" value="obv-plot"/>
+          <button type="submit"class="btn btn-primary">On Balance Volume for {{ stock.Symbol }} </button>
+
+        </form>
+      </div>
+      <div id="reco" class="inner">
         <form action="portfolio" method = "POST">
 
           {% csrf_token %}
@@ -323,9 +348,12 @@
 
         </form>
       </div>
+    </div></center>
       <br>
       <div id="p">
-        <p align='center' id='recom' style="color:red;"><b>{{value_reco}}</b></p>
+        <p align='center' id='recom' style="color:#EF7928;"><b>{{value_reco}}</b></p>
+        <p align='center' id='recom' style="color:#EF7928;"><b>{{ann_pred}}</b></p>
+
       </div>
       <br>
       {% if stock_rows %}
@@ -393,7 +421,7 @@
 
   {% if portfolio %}
     <div align="center" class="page-header">
-      <h1>PORTFOLIO</h1>
+      PORTFOLIO
     </div>
 
     <ul class="nav nav-tabs" id="product-table">
@@ -669,31 +697,21 @@
         </table>
       </div>
     </div>
-
-  {% endif %}
-
-  {% if portfolio_rows %}
+    {% if portfolio_rows %}
     <ul class="nav nav-tabs">
-      <!--<li class="active"><a href="#chart1" data-toggle="tab"><h4>Portfolio OHLC and Volume</h4></a></li>-->
       <li class="active"><a href="#chart2" data-toggle="tab"><h4>PortFolio Value vs. Time</h4></a></li>
-      <!--<li><a href="#chart3" data-toggle="tab"><h4>Stock Value Pie Chart</h4></a></li>-->
     </ul>
     <div class="tab-content">
-      <!--<div class="tab-pane active" id="chart1">
-        <div id="portfolio-ohlc"></div>
-      </div>-->
       <div class="tab-pane active" id="chart2">
         <div id="portfolio-time-val-graph" style="height:400px;width:980px"></div>
       </div>
-      <!--<div class="tab-pane" id="chart3">
-        <div id="pie"></div>
-      </div>-->
     </div>
-
+    
     <div class="panel panel-default">
+      
       <div class="panel-heading text-center">
         <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#accordion" href="#collapse8">Portfolio Historical Data</a>
+          <!--<a data-toggle="collapse" data-parent="#accordion" href="#collapse8">Portfolio Historical Data</a>-->
         </h4>
       </div>
       <div id="collapse8" class="panel-collapse collapse">
@@ -728,7 +746,14 @@
           </table>
         </div>
       </div>
+
     </div>
+
+
+  {% endif %}
+
+ 
+
 
     {% load compress %}
     {% load staticfiles %}
